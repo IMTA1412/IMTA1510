@@ -1,0 +1,120 @@
+ChatGPT
+
+
+
+0b351caa-d5ec-4082-885a-c02c3378265d.png
+Create an HTML web-based game with a beach background. Various types of small trash should appear on the beach, such as plastic bottles, paper containers, plastic bags, Styrofoam, drink cups, and other floating waste. A total of 50 pieces of trash should be displayed, and each trash icon should be randomly rotated at different angles. Every time the webpage is opened, the trash should be randomly scattered across the lower half of the beach area. Players can click on the trash to collect points. Different types and sizes of trash should provide different scores. After all trash has been collected, a message such as “Mission Complete” or “Go to the Next Level” should appear. The game title should be “SDGs Plastic-Free Sustainability – Beach Cleanup”, and it should appear both in the webpage title and in the page header. The header title should be displayed in large bold text at the top-left corner of the page, while the score and performance information should be displayed at the top-right corner.
+
+Sdgs Beach Cleanup Game
+· html
+      z-index: 4;
+    }
+
+    .trash {
+      position: absolute;
+      border: none;
+      background: transparent;
+      cursor: pointer;
+      font-size: var(--size);
+      width: calc(var(--size) * 1.45);
+      height: calc(var(--size) * 1.45);
+      display: grid;
+      place-items: center;
+      transform: rotate(var(--rotation));
+      filter: drop-shadow(0 5px 5px rgba(60, 36, 5, .32));
+      transition: transform .16s ease, opacity .16s ease;
+      user-select: none;
+    }
+
+    .trash:hover {
+      transform: rotate(var(--rotation)) scale(1.18);
+    }
+
+    .trash.collected {
+      pointer-events: none;
+      opacity: 0;
+      transform: rotate(var(--rotation)) scale(.2) translateY(-25px);
+    }
+
+    .complete {
+      position: fixed;
+      inset: 0;
+      z-index: 30;
+      display: none;
+      place-items: center;
+      background: rgba(8, 51, 68, .34);
+      backdrop-filter: blur(3px);
+    }
+
+    .complete.show { display: grid; }
+
+    .complete-card {
+      padding: 42px 54px;
+      border-radius: 30px;
+      background: rgba(255, 255, 255, .92);
+      color: #064e3b;
+      text-align: center;
+      box-shadow: 0 20px 60px rgba(0,0,0,.25);
+      animation: pop .36s ease-out;
+    }
+
+    .complete-card h2 {
+      font-size: clamp(38px, 6vw, 78px);
+      margin-bottom: 12px;
+    }
+
+    .complete-card p {
+      font-size: 22px;
+      font-weight: 800;
+      color: #0f766e;
+    }
+
+    .complete-card button {
+      margin-top: 24px;
+      padding: 13px 24px;
+      border: none;
+      border-radius: 999px;
+      background: #0f766e;
+      color: white;
+      font-size: 17px;
+      font-weight: 800;
+      cursor: pointer;
+    }
+
+    @keyframes pop {
+      from { transform: scale(.82); opacity: 0; }
+      to { transform: scale(1); opacity: 1; }
+    }
+
+    @media (max-width: 760px) {
+      header {
+        padding: 16px;
+        flex-direction: column;
+      }
+      h1 { max-width: 100%; }
+      .hud { align-self: flex-end; font-size: 16px; }
+    }
+  </style>
+</head>
+<body>
+  <main class="game" aria-label="Beach cleanup game">
+    <header>
+      <h1>SDGs Plastic-Free Sustainability – Beach Cleanup</h1>
+      <section class="hud" aria-live="polite">
+        <div>Score: <span id="score">0</span></div>
+        <div>Collected: <span id="collected">0</span> / <span id="total">50</span></div>
+        <small id="performance">Performance: Start cleaning!</small>
+      </section>
+    </header>
+
+已思考 29s
+Done — I created the HTML beach cleanup game in canvas.
+
+認識 Codex。
+Codex 幫你更快更新 UI，讓細節持續推進。你的 ChatGPT 方案可免費使用。
+
+下載應用程式
+
+深入瞭解
+
+
