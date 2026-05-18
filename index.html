@@ -3,15 +3,19 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>SDGs Plastic-Free Sustainability – Beach Cleanup</title>
+  <title>SDGs Gender Equality</title>
   <style>
-    * { box-sizing: border-box; margin: 0; padding: 0; }
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
 
     body {
       min-height: 100vh;
       font-family: Arial, Helvetica, sans-serif;
       overflow: hidden;
-      background: #8ed8ff;
+      background: #9edaf5;
     }
 
     .game {
@@ -20,43 +24,39 @@
       height: 100vh;
       overflow: hidden;
       background:
-        radial-gradient(circle at 18% 12%, #fff7a8 0 45px, transparent 46px),
-        linear-gradient(to bottom, #78cfff 0%, #9ce5ff 28%, #35b8df 29%, #209fc3 46%, #f7dc96 47%, #edc977 100%);
+        radial-gradient(circle at 82% 13%, #fff2a6 0 48px, transparent 49px),
+        linear-gradient(to bottom, #8fd3f4 0%, #b8ecff 42%, #9bd37c 43%, #65a94d 100%);
     }
 
     .game::before {
       content: "";
       position: absolute;
-      left: -8%;
-      top: 34%;
-      width: 116%;
-      height: 90px;
-      background: repeating-radial-gradient(ellipse at center, rgba(255,255,255,.9) 0 4px, transparent 5px 16px);
-      opacity: .75;
-      transform: rotate(-2deg);
-      pointer-events: none;
+      inset: auto -10% 0 -10%;
+      height: 60%;
+      background:
+        radial-gradient(ellipse at 15% 65%, rgba(49, 103, 35, .22) 0 8px, transparent 9px),
+        radial-gradient(ellipse at 60% 72%, rgba(49, 103, 35, .18) 0 7px, transparent 8px),
+        radial-gradient(ellipse at 85% 48%, rgba(49, 103, 35, .18) 0 6px, transparent 7px),
+        linear-gradient(160deg, #7fc45b, #4d963f);
+      background-size: 170px 120px, 190px 130px, 140px 110px, auto;
+      z-index: 0;
     }
 
-    .game::after {
-      content: "";
+    .path {
       position: absolute;
-      left: -10%;
-      bottom: 0;
-      width: 120%;
-      height: 53%;
-      background:
-        radial-gradient(circle at 18% 78%, rgba(127, 91, 42, .18) 0 2px, transparent 3px),
-        radial-gradient(circle at 50% 55%, rgba(127, 91, 42, .14) 0 2px, transparent 3px),
-        radial-gradient(circle at 80% 70%, rgba(127, 91, 42, .13) 0 2px, transparent 3px),
-        linear-gradient(165deg, #f7df9c, #efc76e 72%, #e5b95e);
-      background-size: 180px 130px, 150px 110px, 220px 150px, auto;
-      pointer-events: none;
+      left: 43%;
+      bottom: -8%;
+      width: 22%;
+      height: 72%;
+      background: linear-gradient(to bottom, rgba(218, 178, 111, .5), #c49351);
+      clip-path: polygon(35% 0, 65% 0, 100% 100%, 0 100%);
+      opacity: .85;
       z-index: 1;
     }
 
     header {
       position: fixed;
-      z-index: 10;
+      z-index: 20;
       top: 0;
       left: 0;
       width: 100%;
@@ -64,119 +64,240 @@
       display: flex;
       justify-content: space-between;
       align-items: flex-start;
-      gap: 16px;
-      color: #083344;
-      text-shadow: 0 2px 8px rgba(255,255,255,.75);
+      gap: 20px;
       pointer-events: none;
+      color: #263238;
+      text-shadow: 0 2px 8px rgba(255,255,255,.72);
     }
 
     h1 {
       max-width: 58vw;
-      font-size: clamp(24px, 3vw, 48px);
+      font-size: clamp(28px, 4vw, 58px);
       font-weight: 900;
-      line-height: 1.05;
+      line-height: 1;
     }
 
-    .hud {
+    .score-panel {
       min-width: 230px;
       padding: 14px 18px;
       border-radius: 20px;
-      background: rgba(255,255,255,.72);
+      background: rgba(255, 255, 255, .78);
       box-shadow: 0 12px 30px rgba(0,0,0,.12);
       backdrop-filter: blur(8px);
-      font-weight: 800;
       font-size: 18px;
+      font-weight: 900;
       text-align: right;
     }
 
-    .hud small {
+    .score-panel small {
       display: block;
-      margin-top: 5px;
+      margin-top: 4px;
       font-size: 13px;
-      font-weight: 700;
-      opacity: .75;
+      opacity: .72;
     }
 
-    #trashLayer {
+    .village {
       position: absolute;
       inset: 0;
-      z-index: 4;
+      z-index: 5;
     }
 
-    .trash {
+    .hut {
       position: absolute;
+      width: var(--w);
+      height: calc(var(--w) * .92);
       border: none;
       background: transparent;
       cursor: pointer;
-      font-size: var(--size);
-      width: calc(var(--size) * 1.45);
-      height: calc(var(--size) * 1.45);
-      display: grid;
-      place-items: center;
-      transform: rotate(var(--rotation));
-      filter: drop-shadow(0 5px 5px rgba(60, 36, 5, .32));
-      transition: transform .16s ease, opacity .16s ease;
-      user-select: none;
+      transform: translate(-50%, -50%) scale(var(--s));
+      transition: transform .16s ease, filter .16s ease, opacity .2s ease;
+      filter: drop-shadow(0 11px 10px rgba(40, 40, 20, .28));
     }
 
-    .trash:hover {
-      transform: rotate(var(--rotation)) scale(1.18);
+    .hut:hover:not(.answered) {
+      transform: translate(-50%, -50%) scale(calc(var(--s) * 1.08));
+      filter: drop-shadow(0 15px 13px rgba(40, 40, 20, .34));
     }
 
-    .trash.collected {
-      pointer-events: none;
-      opacity: 0;
-      transform: rotate(var(--rotation)) scale(.2) translateY(-25px);
+    .hut.answered {
+      opacity: .58;
+      cursor: default;
     }
 
-    .complete {
+    .roof {
+      position: absolute;
+      left: 3%;
+      top: 0;
+      width: 94%;
+      height: 48%;
+      background:
+        repeating-linear-gradient(115deg, rgba(95, 56, 18, .32) 0 5px, transparent 6px 13px),
+        linear-gradient(135deg, #b97725, #8b4d15);
+      clip-path: polygon(50% 0, 100% 100%, 0 100%);
+      border-radius: 10px;
+    }
+
+    .house {
+      position: absolute;
+      left: 16%;
+      bottom: 0;
+      width: 68%;
+      height: 56%;
+      background:
+        repeating-linear-gradient(90deg, rgba(110, 76, 38, .22) 0 5px, transparent 6px 16px),
+        linear-gradient(to bottom, #d9a357, #ad742e);
+      border-radius: 12px 12px 8px 8px;
+      border: 3px solid rgba(99, 58, 20, .3);
+    }
+
+    .door {
+      position: absolute;
+      left: 37%;
+      bottom: 0;
+      width: 26%;
+      height: 48%;
+      background: #5b3218;
+      border-radius: 8px 8px 0 0;
+    }
+
+    .window {
+      position: absolute;
+      top: 27%;
+      width: 17%;
+      height: 20%;
+      border-radius: 50%;
+      background: #ffe5a7;
+      box-shadow: inset 0 0 0 3px rgba(91, 50, 24, .35);
+    }
+
+    .window.left { left: 13%; }
+    .window.right { right: 13%; }
+
+    .modal,
+    .result-screen {
       position: fixed;
       inset: 0;
-      z-index: 30;
+      z-index: 50;
       display: none;
       place-items: center;
-      background: rgba(8, 51, 68, .34);
+      background: rgba(20, 45, 35, .42);
       backdrop-filter: blur(3px);
+      padding: 18px;
     }
 
-    .complete.show { display: grid; }
-
-    .complete-card {
-      padding: 42px 54px;
-      border-radius: 30px;
-      background: rgba(255, 255, 255, .92);
-      color: #064e3b;
-      text-align: center;
-      box-shadow: 0 20px 60px rgba(0,0,0,.25);
-      animation: pop .36s ease-out;
+    .modal.show,
+    .result-screen.show {
+      display: grid;
     }
 
-    .complete-card h2 {
-      font-size: clamp(38px, 6vw, 78px);
-      margin-bottom: 12px;
+    .card {
+      width: min(680px, 94vw);
+      padding: 32px;
+      border-radius: 28px;
+      background: rgba(255,255,255,.95);
+      box-shadow: 0 24px 70px rgba(0,0,0,.28);
+      color: #24302c;
+      animation: pop .25s ease-out;
     }
 
-    .complete-card p {
-      font-size: 22px;
-      font-weight: 800;
-      color: #0f766e;
+    .question-number {
+      font-size: 14px;
+      font-weight: 900;
+      color: #7c3aed;
+      text-transform: uppercase;
+      letter-spacing: .08em;
+      margin-bottom: 10px;
     }
 
-    .complete-card button {
-      margin-top: 24px;
-      padding: 13px 24px;
-      border: none;
-      border-radius: 999px;
-      background: #0f766e;
-      color: white;
+    .question-text {
+      font-size: clamp(22px, 3vw, 32px);
+      font-weight: 900;
+      line-height: 1.18;
+      margin-bottom: 20px;
+    }
+
+    .choices {
+      display: grid;
+      gap: 12px;
+    }
+
+    .choice {
+      width: 100%;
+      padding: 15px 16px;
+      border: 2px solid #e6defb;
+      border-radius: 16px;
+      background: #faf8ff;
+      color: #2f2a3a;
       font-size: 17px;
       font-weight: 800;
+      text-align: left;
+      cursor: pointer;
+      transition: transform .12s ease, background .12s ease, border-color .12s ease;
+    }
+
+    .choice:hover {
+      transform: translateY(-2px);
+      background: #f2eaff;
+      border-color: #a78bfa;
+    }
+
+    .feedback {
+      min-height: 28px;
+      margin-top: 14px;
+      font-weight: 900;
+      font-size: 18px;
+    }
+
+    .feedback.correct { color: #0f766e; }
+    .feedback.wrong { color: #dc2626; }
+
+    .next-question {
+      display: none;
+      margin-top: 16px;
+      padding: 13px 22px;
+      border: none;
+      border-radius: 999px;
+      background: #7c3aed;
+      color: white;
+      font-size: 16px;
+      font-weight: 900;
+      cursor: pointer;
+    }
+
+    .result-card {
+      text-align: center;
+    }
+
+    .result-card h2 {
+      font-size: clamp(34px, 6vw, 70px);
+      margin-bottom: 12px;
+      color: #5b21b6;
+    }
+
+    .result-card p {
+      font-size: 21px;
+      font-weight: 800;
+      margin-bottom: 22px;
+      color: #34403b;
+    }
+
+    .result-card a,
+    .result-card button {
+      display: inline-block;
+      padding: 14px 26px;
+      border: none;
+      border-radius: 999px;
+      background: #5b21b6;
+      color: white;
+      text-decoration: none;
+      font-size: 18px;
+      font-weight: 900;
       cursor: pointer;
     }
 
     @keyframes pop {
-      from { transform: scale(.82); opacity: 0; }
-      to { transform: scale(1); opacity: 1; }
+      from { opacity: 0; transform: scale(.9); }
+      to { opacity: 1; transform: scale(1); }
     }
 
     @media (max-width: 760px) {
@@ -184,134 +305,283 @@
         padding: 16px;
         flex-direction: column;
       }
+
       h1 { max-width: 100%; }
-      .hud { align-self: flex-end; font-size: 16px; }
+      .score-panel { align-self: flex-end; font-size: 16px; }
+      .card { padding: 24px; }
     }
   </style>
 </head>
 <body>
-  <main class="game" aria-label="Beach cleanup game">
+  <main class="game" aria-label="SDGs Gender Equality village quiz game">
+    <div class="path"></div>
+
     <header>
-      <h1>SDGs Plastic-Free Sustainability – Beach Cleanup</h1>
-      <section class="hud" aria-live="polite">
-        <div>Score: <span id="score">0</span></div>
-        <div>Collected: <span id="collected">0</span> / <span id="total">50</span></div>
-        <small id="performance">Performance: Start cleaning!</small>
+      <h1>SDGs Gender Equality</h1>
+      <section class="score-panel" aria-live="polite">
+        Correct Answers: <span id="correctCount">0</span> / 10
+        <small>Click each straw hut to answer a question</small>
       </section>
     </header>
 
-    <section id="trashLayer" aria-label="Clickable trash items"></section>
+    <section id="village" class="village" aria-label="Village with clickable straw huts"></section>
 
-    <section id="complete" class="complete" role="dialog" aria-modal="true">
-      <div class="complete-card">
-        <h2>Mission Complete!</h2>
-        <p>Go to the Next Level 🌊</p>
-        <button onclick="startGame()">Play Again</button>
+    <section id="questionModal" class="modal" role="dialog" aria-modal="true" aria-labelledby="questionText">
+      <div class="card">
+        <div id="questionNumber" class="question-number">Question 1 of 10</div>
+        <div id="questionText" class="question-text"></div>
+        <div id="choices" class="choices"></div>
+        <div id="feedback" class="feedback"></div>
+        <button id="closeQuestion" class="next-question">Continue</button>
+      </div>
+    </section>
+
+    <section id="resultScreen" class="result-screen" role="dialog" aria-modal="true">
+      <div class="card result-card">
+        <h2 id="resultTitle"></h2>
+        <p id="resultMessage"></p>
+        <div id="resultAction"></div>
       </div>
     </section>
   </main>
 
   <script>
-    const TOTAL_TRASH = 50;
-    const trashLayer = document.getElementById('trashLayer');
-    const scoreEl = document.getElementById('score');
-    const collectedEl = document.getElementById('collected');
-    const totalEl = document.getElementById('total');
-    const performanceEl = document.getElementById('performance');
-    const completeEl = document.getElementById('complete');
-
-    const trashTypes = [
-      { name: 'plastic bottle', icon: '🧴', min: 28, max: 46, score: 10 },
-      { name: 'paper container', icon: '🥡', min: 30, max: 50, score: 12 },
-      { name: 'plastic bag', icon: '🛍️', min: 34, max: 56, score: 16 },
-      { name: 'styrofoam', icon: '📦', min: 26, max: 48, score: 14 },
-      { name: 'drink cup', icon: '🥤', min: 28, max: 48, score: 11 },
-      { name: 'can waste', icon: '🥫', min: 24, max: 42, score: 13 },
-      { name: 'floating waste', icon: '🧃', min: 25, max: 45, score: 15 },
-      { name: 'wrapper', icon: '🍬', min: 22, max: 36, score: 8 }
+    const questions = [
+      {
+        question: 'What does gender equality mean?',
+        choices: [
+          'Only giving more rights to women',
+          'Everyone has equal rights, opportunities, and respect regardless of gender',
+          'Men and women must do exactly the same jobs',
+          'Only girls should go to school'
+        ],
+        answer: 1
+      },
+      {
+        question: 'Which action supports gender equality in education?',
+        choices: [
+          'Letting only boys study science',
+          'Encouraging all children to learn and attend school',
+          'Keeping girls at home to do chores',
+          'Giving school supplies only to boys'
+        ],
+        answer: 1
+      },
+      {
+        question: 'Which sentence shows fair treatment at work?',
+        choices: [
+          'People should receive equal pay for equal work',
+          'Only men can be leaders',
+          'Women should not work after marriage',
+          'Some jobs should never be open to women'
+        ],
+        answer: 0
+      },
+      {
+        question: 'Which behavior helps reduce gender stereotypes?',
+        choices: [
+          'Saying boys cannot cry',
+          'Saying girls cannot be engineers',
+          'Letting people choose activities based on interest and ability',
+          'Telling children their dreams depend only on gender'
+        ],
+        answer: 2
+      },
+      {
+        question: 'Why is it important for girls and women to have leadership opportunities?',
+        choices: [
+          'It makes communities more inclusive and balanced',
+          'It means men cannot be leaders',
+          'It is only useful in schools',
+          'It prevents teamwork'
+        ],
+        answer: 0
+      },
+      {
+        question: 'Which example shows shared responsibility at home?',
+        choices: [
+          'Only one gender does all housework',
+          'Everyone helps with chores according to ability and time',
+          'Children do not need to learn responsibility',
+          'Cooking is only for women'
+        ],
+        answer: 1
+      },
+      {
+        question: 'What should you do if you see someone being treated unfairly because of gender?',
+        choices: [
+          'Ignore it every time',
+          'Laugh with others',
+          'Speak up safely or ask a trusted person for help',
+          'Join the unfair treatment'
+        ],
+        answer: 2
+      },
+      {
+        question: 'Which statement supports SDG 5: Gender Equality?',
+        choices: [
+          'All genders deserve safety, dignity, and equal opportunity',
+          'Only boys need confidence',
+          'Only girls need protection',
+          'Gender equality is not connected to development'
+        ],
+        answer: 0
+      },
+      {
+        question: 'What is one way schools can promote gender equality?',
+        choices: [
+          'Use examples of both women and men in lessons and activities',
+          'Let boys answer every question first',
+          'Separate subjects by gender',
+          'Tell girls not to join sports'
+        ],
+        answer: 0
+      },
+      {
+        question: 'Which choice best describes respect for gender equality?',
+        choices: [
+          'Listening to everyone and valuing their ideas equally',
+          'Thinking one gender is always better',
+          'Making rules that limit only one gender',
+          'Judging ability only by gender'
+        ],
+        answer: 0
+      }
     ];
 
-    let score = 0;
-    let collected = 0;
-    let startTime = Date.now();
+    const hutPositions = [
+      { x: 18, y: 58, w: 120, s: 1.05 },
+      { x: 35, y: 55, w: 110, s: .98 },
+      { x: 55, y: 58, w: 124, s: 1.08 },
+      { x: 75, y: 55, w: 108, s: .98 },
+      { x: 25, y: 72, w: 130, s: 1.12 },
+      { x: 46, y: 72, w: 118, s: 1.02 },
+      { x: 68, y: 73, w: 132, s: 1.14 },
+      { x: 14, y: 86, w: 105, s: .95 },
+      { x: 40, y: 88, w: 125, s: 1.06 },
+      { x: 82, y: 87, w: 118, s: 1.02 }
+    ];
 
-    function random(min, max) {
-      return Math.random() * (max - min) + min;
+    const village = document.getElementById('village');
+    const correctCountEl = document.getElementById('correctCount');
+    const questionModal = document.getElementById('questionModal');
+    const questionNumber = document.getElementById('questionNumber');
+    const questionText = document.getElementById('questionText');
+    const choicesEl = document.getElementById('choices');
+    const feedback = document.getElementById('feedback');
+    const closeQuestion = document.getElementById('closeQuestion');
+    const resultScreen = document.getElementById('resultScreen');
+    const resultTitle = document.getElementById('resultTitle');
+    const resultMessage = document.getElementById('resultMessage');
+    const resultAction = document.getElementById('resultAction');
+
+    let correctCount = 0;
+    let answeredCount = 0;
+    let currentQuestionIndex = null;
+    let currentHut = null;
+
+    function createHut(position, index) {
+      const hut = document.createElement('button');
+      hut.className = 'hut';
+      hut.type = 'button';
+      hut.style.left = position.x + '%';
+      hut.style.top = position.y + '%';
+      hut.style.setProperty('--w', position.w + 'px');
+      hut.style.setProperty('--s', position.s);
+      hut.setAttribute('aria-label', `Open straw hut question ${index + 1}`);
+      hut.dataset.questionIndex = index;
+      hut.innerHTML = `
+        <div class="roof"></div>
+        <div class="house">
+          <div class="window left"></div>
+          <div class="window right"></div>
+          <div class="door"></div>
+        </div>
+      `;
+      hut.addEventListener('click', () => openQuestion(index, hut));
+      return hut;
     }
 
-    function randomTrashType() {
-      return trashTypes[Math.floor(Math.random() * trashTypes.length)];
-    }
+    function openQuestion(index, hut) {
+      if (hut.classList.contains('answered')) return;
 
-    function performanceText() {
-      const seconds = Math.max(1, Math.floor((Date.now() - startTime) / 1000));
-      const rate = (collected / seconds).toFixed(2);
-      if (collected === 0) return 'Performance: Start cleaning!';
-      if (rate >= 1.2) return `Performance: Excellent • ${rate} items/sec`;
-      if (rate >= 0.7) return `Performance: Great • ${rate} items/sec`;
-      return `Performance: Steady • ${rate} items/sec`;
-    }
+      currentQuestionIndex = index;
+      currentHut = hut;
+      const q = questions[index];
 
-    function updateHud() {
-      scoreEl.textContent = score;
-      collectedEl.textContent = collected;
-      performanceEl.textContent = performanceText();
-    }
+      questionNumber.textContent = `Question ${index + 1} of ${questions.length}`;
+      questionText.textContent = q.question;
+      choicesEl.innerHTML = '';
+      feedback.textContent = '';
+      feedback.className = 'feedback';
+      closeQuestion.style.display = 'none';
 
-    function createTrash(index) {
-      const type = randomTrashType();
-      const size = random(type.min, type.max);
-      const item = document.createElement('button');
-
-      item.className = 'trash';
-      item.type = 'button';
-      item.textContent = type.icon;
-      item.title = `${type.name}: ${type.score} points`;
-      item.setAttribute('aria-label', `Collect ${type.name} worth ${type.score} points`);
-
-      item.style.setProperty('--size', `${size}px`);
-      item.style.setProperty('--rotation', `${random(-85, 85)}deg`);
-
-      const x = random(2, 94);
-      const y = random(50, 92);
-      item.style.left = `${x}%`;
-      item.style.top = `${y}%`;
-
-      item.dataset.score = Math.round(type.score + (size - type.min) * 0.25);
-
-      item.addEventListener('click', () => {
-        if (item.classList.contains('collected')) return;
-        item.classList.add('collected');
-        score += Number(item.dataset.score);
-        collected += 1;
-        updateHud();
-
-        if (collected === TOTAL_TRASH) {
-          setTimeout(() => completeEl.classList.add('show'), 280);
-        }
+      q.choices.forEach((choice, choiceIndex) => {
+        const button = document.createElement('button');
+        button.className = 'choice';
+        button.type = 'button';
+        button.textContent = choice;
+        button.addEventListener('click', () => answerQuestion(choiceIndex));
+        choicesEl.appendChild(button);
       });
 
-      return item;
+      questionModal.classList.add('show');
+    }
+
+    function answerQuestion(choiceIndex) {
+      const q = questions[currentQuestionIndex];
+      const choiceButtons = document.querySelectorAll('.choice');
+
+      choiceButtons.forEach(button => button.disabled = true);
+
+      if (choiceIndex === q.answer) {
+        correctCount += 1;
+        feedback.textContent = 'Correct! Great choice for equality.';
+        feedback.className = 'feedback correct';
+      } else {
+        feedback.textContent = `Not quite. Correct answer: ${q.choices[q.answer]}`;
+        feedback.className = 'feedback wrong';
+      }
+
+      answeredCount += 1;
+      correctCountEl.textContent = correctCount;
+      currentHut.classList.add('answered');
+      closeQuestion.style.display = 'inline-block';
+    }
+
+    closeQuestion.addEventListener('click', () => {
+      questionModal.classList.remove('show');
+      if (answeredCount === questions.length) {
+        setTimeout(showResult, 250);
+      }
+    });
+
+    function showResult() {
+      if (correctCount >= 8) {
+        resultTitle.textContent = 'Proceed to Next Level';
+        resultMessage.textContent = `Excellent work! You answered ${correctCount} out of 10 correctly.`;
+        resultAction.innerHTML = '<a href="level2.html">Next Level</a>';
+      } else {
+        resultTitle.textContent = 'Challenge Again';
+        resultMessage.textContent = `You answered ${correctCount} out of 10 correctly. Try again and aim for 8 or more!`;
+        resultAction.innerHTML = '<button onclick="location.href=\'index.html\'">Retry</button>';
+      }
+      resultScreen.classList.add('show');
     }
 
     function startGame() {
-      trashLayer.innerHTML = '';
-      score = 0;
-      collected = 0;
-      startTime = Date.now();
-      completeEl.classList.remove('show');
-      totalEl.textContent = TOTAL_TRASH;
-      updateHud();
+      village.innerHTML = '';
+      correctCount = 0;
+      answeredCount = 0;
+      correctCountEl.textContent = '0';
+      resultScreen.classList.remove('show');
 
-      const fragment = document.createDocumentFragment();
-      for (let i = 0; i < TOTAL_TRASH; i++) {
-        fragment.appendChild(createTrash(i));
-      }
-      trashLayer.appendChild(fragment);
+      hutPositions.forEach((position, index) => {
+        village.appendChild(createHut(position, index));
+      });
     }
 
     startGame();
-    setInterval(updateHud, 1000);
   </script>
 </body>
 </html>
