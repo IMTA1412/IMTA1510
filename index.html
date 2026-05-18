@@ -1,12 +1,105 @@
-ChatGPT
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>SDGs Plastic-Free Sustainability – Beach Cleanup</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
 
+    body {
+      min-height: 100vh;
+      font-family: Arial, Helvetica, sans-serif;
+      overflow: hidden;
+      background: #8ed8ff;
+    }
 
+    .game {
+      position: relative;
+      width: 100vw;
+      height: 100vh;
+      overflow: hidden;
+      background:
+        radial-gradient(circle at 18% 12%, #fff7a8 0 45px, transparent 46px),
+        linear-gradient(to bottom, #78cfff 0%, #9ce5ff 28%, #35b8df 29%, #209fc3 46%, #f7dc96 47%, #edc977 100%);
+    }
 
-0b351caa-d5ec-4082-885a-c02c3378265d.png
-Create an HTML web-based game with a beach background. Various types of small trash should appear on the beach, such as plastic bottles, paper containers, plastic bags, Styrofoam, drink cups, and other floating waste. A total of 50 pieces of trash should be displayed, and each trash icon should be randomly rotated at different angles. Every time the webpage is opened, the trash should be randomly scattered across the lower half of the beach area. Players can click on the trash to collect points. Different types and sizes of trash should provide different scores. After all trash has been collected, a message such as “Mission Complete” or “Go to the Next Level” should appear. The game title should be “SDGs Plastic-Free Sustainability – Beach Cleanup”, and it should appear both in the webpage title and in the page header. The header title should be displayed in large bold text at the top-left corner of the page, while the score and performance information should be displayed at the top-right corner.
+    .game::before {
+      content: "";
+      position: absolute;
+      left: -8%;
+      top: 34%;
+      width: 116%;
+      height: 90px;
+      background: repeating-radial-gradient(ellipse at center, rgba(255,255,255,.9) 0 4px, transparent 5px 16px);
+      opacity: .75;
+      transform: rotate(-2deg);
+      pointer-events: none;
+    }
 
-Sdgs Beach Cleanup Game
-· html
+    .game::after {
+      content: "";
+      position: absolute;
+      left: -10%;
+      bottom: 0;
+      width: 120%;
+      height: 53%;
+      background:
+        radial-gradient(circle at 18% 78%, rgba(127, 91, 42, .18) 0 2px, transparent 3px),
+        radial-gradient(circle at 50% 55%, rgba(127, 91, 42, .14) 0 2px, transparent 3px),
+        radial-gradient(circle at 80% 70%, rgba(127, 91, 42, .13) 0 2px, transparent 3px),
+        linear-gradient(165deg, #f7df9c, #efc76e 72%, #e5b95e);
+      background-size: 180px 130px, 150px 110px, 220px 150px, auto;
+      pointer-events: none;
+      z-index: 1;
+    }
+
+    header {
+      position: fixed;
+      z-index: 10;
+      top: 0;
+      left: 0;
+      width: 100%;
+      padding: 22px 28px;
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 16px;
+      color: #083344;
+      text-shadow: 0 2px 8px rgba(255,255,255,.75);
+      pointer-events: none;
+    }
+
+    h1 {
+      max-width: 58vw;
+      font-size: clamp(24px, 3vw, 48px);
+      font-weight: 900;
+      line-height: 1.05;
+    }
+
+    .hud {
+      min-width: 230px;
+      padding: 14px 18px;
+      border-radius: 20px;
+      background: rgba(255,255,255,.72);
+      box-shadow: 0 12px 30px rgba(0,0,0,.12);
+      backdrop-filter: blur(8px);
+      font-weight: 800;
+      font-size: 18px;
+      text-align: right;
+    }
+
+    .hud small {
+      display: block;
+      margin-top: 5px;
+      font-size: 13px;
+      font-weight: 700;
+      opacity: .75;
+    }
+
+    #trashLayer {
+      position: absolute;
+      inset: 0;
       z-index: 4;
     }
 
@@ -107,14 +200,118 @@ Sdgs Beach Cleanup Game
       </section>
     </header>
 
-已思考 29s
-Done — I created the HTML beach cleanup game in canvas.
+    <section id="trashLayer" aria-label="Clickable trash items"></section>
 
-認識 Codex。
-Codex 幫你更快更新 UI，讓細節持續推進。你的 ChatGPT 方案可免費使用。
+    <section id="complete" class="complete" role="dialog" aria-modal="true">
+      <div class="complete-card">
+        <h2>Mission Complete!</h2>
+        <p>Go to the Next Level 🌊</p>
+        <button onclick="startGame()">Play Again</button>
+      </div>
+    </section>
+  </main>
 
-下載應用程式
+  <script>
+    const TOTAL_TRASH = 50;
+    const trashLayer = document.getElementById('trashLayer');
+    const scoreEl = document.getElementById('score');
+    const collectedEl = document.getElementById('collected');
+    const totalEl = document.getElementById('total');
+    const performanceEl = document.getElementById('performance');
+    const completeEl = document.getElementById('complete');
 
-深入瞭解
+    const trashTypes = [
+      { name: 'plastic bottle', icon: '🧴', min: 28, max: 46, score: 10 },
+      { name: 'paper container', icon: '🥡', min: 30, max: 50, score: 12 },
+      { name: 'plastic bag', icon: '🛍️', min: 34, max: 56, score: 16 },
+      { name: 'styrofoam', icon: '📦', min: 26, max: 48, score: 14 },
+      { name: 'drink cup', icon: '🥤', min: 28, max: 48, score: 11 },
+      { name: 'can waste', icon: '🥫', min: 24, max: 42, score: 13 },
+      { name: 'floating waste', icon: '🧃', min: 25, max: 45, score: 15 },
+      { name: 'wrapper', icon: '🍬', min: 22, max: 36, score: 8 }
+    ];
 
+    let score = 0;
+    let collected = 0;
+    let startTime = Date.now();
 
+    function random(min, max) {
+      return Math.random() * (max - min) + min;
+    }
+
+    function randomTrashType() {
+      return trashTypes[Math.floor(Math.random() * trashTypes.length)];
+    }
+
+    function performanceText() {
+      const seconds = Math.max(1, Math.floor((Date.now() - startTime) / 1000));
+      const rate = (collected / seconds).toFixed(2);
+      if (collected === 0) return 'Performance: Start cleaning!';
+      if (rate >= 1.2) return `Performance: Excellent • ${rate} items/sec`;
+      if (rate >= 0.7) return `Performance: Great • ${rate} items/sec`;
+      return `Performance: Steady • ${rate} items/sec`;
+    }
+
+    function updateHud() {
+      scoreEl.textContent = score;
+      collectedEl.textContent = collected;
+      performanceEl.textContent = performanceText();
+    }
+
+    function createTrash(index) {
+      const type = randomTrashType();
+      const size = random(type.min, type.max);
+      const item = document.createElement('button');
+
+      item.className = 'trash';
+      item.type = 'button';
+      item.textContent = type.icon;
+      item.title = `${type.name}: ${type.score} points`;
+      item.setAttribute('aria-label', `Collect ${type.name} worth ${type.score} points`);
+
+      item.style.setProperty('--size', `${size}px`);
+      item.style.setProperty('--rotation', `${random(-85, 85)}deg`);
+
+      const x = random(2, 94);
+      const y = random(50, 92);
+      item.style.left = `${x}%`;
+      item.style.top = `${y}%`;
+
+      item.dataset.score = Math.round(type.score + (size - type.min) * 0.25);
+
+      item.addEventListener('click', () => {
+        if (item.classList.contains('collected')) return;
+        item.classList.add('collected');
+        score += Number(item.dataset.score);
+        collected += 1;
+        updateHud();
+
+        if (collected === TOTAL_TRASH) {
+          setTimeout(() => completeEl.classList.add('show'), 280);
+        }
+      });
+
+      return item;
+    }
+
+    function startGame() {
+      trashLayer.innerHTML = '';
+      score = 0;
+      collected = 0;
+      startTime = Date.now();
+      completeEl.classList.remove('show');
+      totalEl.textContent = TOTAL_TRASH;
+      updateHud();
+
+      const fragment = document.createDocumentFragment();
+      for (let i = 0; i < TOTAL_TRASH; i++) {
+        fragment.appendChild(createTrash(i));
+      }
+      trashLayer.appendChild(fragment);
+    }
+
+    startGame();
+    setInterval(updateHud, 1000);
+  </script>
+</body>
+</html>
